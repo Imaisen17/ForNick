@@ -26,4 +26,21 @@ public class CourseController {
         log.info("inside addCourse method of CourseController");
         return courseService.saveCourse(course);
     }
+
+    @PutMapping("/edit/{id}")
+    public Course editCourse(@PathVariable("id") Long courseId, @RequestBody Course tempCourse){
+        log.info("inside editCourse method of CourseController");
+        Course course = courseService.findCourseById(courseId);
+        course.setCourseName(tempCourse.getCourseName());
+        course.setCourseDescription(tempCourse.getCourseDescription());
+        course.setCoursePrice(tempCourse.getCoursePrice());
+        course.setUserList(tempCourse.getUserList());
+        return courseService.saveCourse(course);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public void deleteCourse(@PathVariable("id") Long courseId){
+        log.info("inside deleteCourse method of CourseController");
+        courseService.deleteByCourseId(courseId);
+    }
 }

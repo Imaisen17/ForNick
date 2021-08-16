@@ -25,4 +25,21 @@ public class UserController {
         log.info("inside addUser method of UserController");
         return userService.saveUser(user);
     }
+
+    @PutMapping("/edit/{id}")
+    public User editUser(@PathVariable("id") Long userId, @RequestBody User tempUser){
+        log.info("inside editUser method of UserController");
+        User user = userService.findUserById(userId);
+        user.setUsername(tempUser.getUsername());
+        user.setEmail(tempUser.getEmail());
+        user.setPassword(tempUser.getPassword());
+        user.setCourseList(tempUser.getCourseList());
+        return userService.saveUser(user);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public void deleteUser(@PathVariable("id") Long userId){
+        log.info("inside deleteUser method of UserController");
+        userService.deleteByUserId(userId);
+    }
 }

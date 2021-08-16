@@ -1,7 +1,6 @@
 package com.swifty.service.education.education.service.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import com.swifty.service.education.education.service.entity.Course;
 import lombok.*;
 
@@ -14,6 +13,8 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userId", scope = Long.class)
+
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,11 +23,11 @@ public class User {
     private String email;
     private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "USER_COURSE",
                 joinColumns = @JoinColumn(name = "userId"),
                 inverseJoinColumns = @JoinColumn(name = "courseId")
     )
-    @JsonManagedReference
+    @JsonIdentityReference(alwaysAsId = true)
     private List<Course> courseList;
 }

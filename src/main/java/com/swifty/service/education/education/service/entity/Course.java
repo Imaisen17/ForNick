@@ -1,7 +1,6 @@
 package com.swifty.service.education.education.service.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 
 import javax.persistence.*;
@@ -13,6 +12,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "courseId", scope = Long.class)
 public class Course {
 
     @Id
@@ -30,7 +30,9 @@ public class Course {
     @JsonManagedReference
     private List<User> userList;*/
 
-    @ManyToMany(mappedBy = "courseList")
-    @JsonManagedReference
+    @ManyToMany(mappedBy = "courseList", fetch = FetchType.LAZY)
+    @JsonIdentityReference(alwaysAsId = true)
     private List<User> userList;
+
+
 }
