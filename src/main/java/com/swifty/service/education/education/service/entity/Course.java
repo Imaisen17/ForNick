@@ -31,7 +31,7 @@ public class Course {
     private List<User> userList;*/
 
     @ManyToMany(mappedBy = "courseList", fetch = FetchType.LAZY)
-    @JsonIdentityReference(alwaysAsId = true)
+    //@JsonIdentityReference(alwaysAsId = true)
     private List<User> userList;
 
 

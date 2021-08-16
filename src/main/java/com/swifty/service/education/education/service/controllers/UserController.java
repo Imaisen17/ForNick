@@ -1,7 +1,9 @@
 package com.swifty.service.education.education.service.controllers;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.swifty.service.education.education.service.dto.UserCourseDTO;
+import com.swifty.service.education.education.service.entity.Course;
 import com.swifty.service.education.education.service.entity.User;
+import com.swifty.service.education.education.service.services.CourseService;
 import com.swifty.service.education.education.service.services.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     @Autowired
     UserService userService;
+    @Autowired
+    CourseService courseService;
 
     @GetMapping("/{id}")
     public User getUserById(@PathVariable("id") Long userId){
@@ -41,5 +45,24 @@ public class UserController {
     public void deleteUser(@PathVariable("id") Long userId){
         log.info("inside deleteUser method of UserController");
         userService.deleteByUserId(userId);
+    }
+
+    @PostMapping("/link")
+    public User addCourseToUser(@RequestBody UserCourseDTO userCourseDTO){
+        log.info("inside addCourseToUser method of UserController");
+        User user = userService.findUserById(userCourseDTO.getUserId());
+        if (user != null){
+            Course course = courseService.findCourseById(userCourseDTO.getCourseId());
+            if (course != null){
+                user.getCourseList().add(course);
+            }else{
+                log.info("Non-existent course");
+                return null;
+            }
+        }else{
+            log.info("Non-existent user");
+            return null;
+        }
+        return userService.saveUser(user);
     }
 }

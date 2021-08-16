@@ -28,6 +28,6 @@ public class User {
                 joinColumns = @JoinColumn(name = "userId"),
                 inverseJoinColumns = @JoinColumn(name = "courseId")
     )
-    @JsonIdentityReference(alwaysAsId = true)
+    //@JsonIdentityReference(alwaysAsId = true)
     private List<Course> courseList;
 }
